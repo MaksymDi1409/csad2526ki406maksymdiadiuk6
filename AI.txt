@@ -1,0 +1,10 @@
+The history of my requests and responses with the AI assistant:
+Laboratory work 1
+Task 1
+Напиши мінімальну програму "Hello World" на С++.
+Ось мінімальний приклад програми «Hello, World!» на C++ 
+
+#include <iostream>
+int main() {
+    std::cout << "Hello, World!";
+}
