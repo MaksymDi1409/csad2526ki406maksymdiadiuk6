@@ -1,16 +1,3 @@
-The history of my requests and responses with the AI assistant:
-Laboratory work 1
-Task 1
-Напиши мінімальну програму "Hello World" на С++.
-Ось мінімальний приклад програми «Hello, World!» на C++ 
-
-#include <iostream>
-int main() {
-    std::cout << "Hello, World!";
-}
-
-Task 2
-Напиши CMakeLists для цього проекту, мова розробки: С++
 cmake_minimum_required(VERSION 3.15)
 
 # Автоматично ім'я проєкту за назвою папки
