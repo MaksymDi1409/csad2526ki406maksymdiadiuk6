@@ -45,23 +45,10 @@ if(APP_SOURCES)
     )
 endif()
 
-# Тести (опціонально)
+# Тести 
 if(BUILD_TESTING)
-    include(CTest)
     enable_testing()
-    # Якщо у вас є тести в tests/, підключіть їх тут.
-    # Приклад: автоматичне створення одного виконуваного для tests/*.cpp
-    file(GLOB TEST_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp")
-    if(TEST_SOURCES)
-        add_executable(${PROJECT_NAME}_tests ${TEST_SOURCES})
-        if(TARGET ${PROJECT_NAME}_lib)
-            target_link_libraries(${PROJECT_NAME}_tests PRIVATE ${PROJECT_NAME}_lib)
-        endif()
-        target_include_directories(${PROJECT_NAME}_tests PRIVATE
-            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        )
-        add_test(NAME run_tests COMMAND ${PROJECT_NAME}_tests)
-    endif()
+    add_subdirectory(tests)
 endif()
 
 # Зручніці для інсталяції (необов'язково)
