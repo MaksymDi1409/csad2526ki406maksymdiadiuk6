@@ -1,0 +1,10 @@
+# CMake build folder
+build/
+
+# VSCode, CLion, і подібні
+.idea/
+.vscode/
+
+# системні файли
+*.log
+*.tmp

@@ -105,3 +105,19 @@ TEST(MathOperations, Add) {
   // assuming you have int add(int a, int b) in math_operations.h/.cpp
   EXPECT_EQ(add(2, 3), 5);
 }
+
+Task 4
+Напиши файл ci.bat для цього проекту
+
+@echo off
+REM === Continuous Integration Build Script for Windows ===
+if not exist build mkdir build
+cd build
+
+cmake ..
+cmake --build . --config Release
+
+ctest --output-on-failure
+
+cd ..
+echo === Build and tests finished successfully ===
