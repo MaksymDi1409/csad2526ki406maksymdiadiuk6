@@ -79,3 +79,87 @@ endif()
 
 # Зручніці для інсталяції (необов'язково)
 install(CODE "message(STATUS \"Project ${PROJECT_NAME} configured.\")")
+
+Task 3
+створи функцію int add(int a, int b)
+#ifndef MATH_OPERATIONS_H
+#define MATH_OPERATIONS_H
+
+// Простa функція додавання — можна включити в кілька translation unit завдяки inline
+inline int add(int a, int b) {
+    return a + b;
+}
+
+#endif // MATH_OPERATIONS_H
+
+напиши юніт тести 
+Files to create/edit to add GoogleTest support and a basic "hello world" test:
+#include <gtest/gtest.h>
+#include "math_operations.h" // if you want to test functions from your project
+
+TEST(HelloWorld, Basic) {
+  EXPECT_EQ(1 + 1, 2);
+}
+
+TEST(MathOperations, Add) {
+  // assuming you have int add(int a, int b) in math_operations.h/.cpp
+  EXPECT_EQ(add(2, 3), 5);
+}
+
+Task 4
+Напиши файл ci.bat для цього проекту
+
+@echo off
+REM === Continuous Integration Build Script for Windows ===
+if not exist build mkdir build
+cd build
+
+cmake ..
+cmake --build . --config Release
+
+ctest --output-on-failure
+
+cd ..
+echo === Build and tests finished successfully ===
+
+Task 5
+Напиши  YML-файл для GitHub Actions
+
+name: Cross-platform Build & Test
+
+on:
+  push:
+    branches:
+      - '*develop*'
+      - master
+  pull_request:
+    branches:
+      - '*develop*'
+      - master
+
+jobs:
+  cross_build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup CMake
+        uses: lukka/get-cmake@v3.29.2
+
+      - name: Build project
+        run: |
+          chmod +x ci.bat || true
+          chmod +x ci.sh || true
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            ./ci.bat
+          else
+            ./ci.sh
+          fi
+
+      - name: Run tests
+        run: ctest --output-on-failure
