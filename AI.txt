@@ -121,3 +121,45 @@ ctest --output-on-failure
 
 cd ..
 echo === Build and tests finished successfully ===
+
+Task 5
+Напиши  YML-файл для GitHub Actions
+
+name: Cross-platform Build & Test
+
+on:
+  push:
+    branches:
+      - '*develop*'
+      - master
+  pull_request:
+    branches:
+      - '*develop*'
+      - master
+
+jobs:
+  cross_build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup CMake
+        uses: lukka/get-cmake@v3.29.2
+
+      - name: Build project
+        run: |
+          chmod +x ci.bat || true
+          chmod +x ci.sh || true
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            ./ci.bat
+          else
+            ./ci.sh
+          fi
+
+      - name: Run tests
+        run: ctest --output-on-failure
