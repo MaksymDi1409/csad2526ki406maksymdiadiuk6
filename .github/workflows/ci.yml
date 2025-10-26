@@ -12,7 +12,9 @@ on:
 
 jobs:
   cross_build:
+    name: Build and Test on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -24,15 +26,18 @@ jobs:
       - name: Setup CMake
         uses: lukka/get-cmake@v3.29.2
 
-      - name: Build project
+      # --- Linux / macOS ---
+      - name: Run CI script on Unix
+        if: runner.os != 'Windows'
         run: |
-          chmod +x ci.bat || true
           chmod +x ci.sh || true
-          if [ "${{ runner.os }}" == "Windows" ]; then
-            ./ci.bat
-          else
-            ./ci.sh
-          fi
+          ./ci.sh
 
+      # --- Windows ---
+      - name: Run CI script on Windows
+        if: runner.os == 'Windows'
+        run: ci.bat
+
+      # --- Run tests (works for all) ---
       - name: Run tests
         run: ctest --output-on-failure
