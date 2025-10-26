@@ -1,0 +1,42 @@
+name: Cross-platform Build & Test
+
+on:
+  push:
+    branches:
+      - '*develop*'
+      - master
+  pull_request:
+    branches:
+      - '*develop*'
+      - master
+
+jobs:
+  cross_build:
+    name: Build and Test on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup CMake
+        uses: lukka/get-cmake@v3.29.2
+
+      # --- Linux / macOS ---
+      - name: Run CI script on Unix
+        if: runner.os != 'Windows'
+        run: |
+          chmod +x ci.sh || true
+          ./ci.sh
+
+      # --- Windows ---
+      - name: Run CI script on Windows
+        if: runner.os == 'Windows'
+        run: .\ci.bat
+      # --- Run tests (works for all) ---
+      - name: Run tests
+        run: ctest --output-on-failure
