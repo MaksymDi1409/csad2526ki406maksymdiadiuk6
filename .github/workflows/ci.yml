@@ -36,8 +36,7 @@ jobs:
       # --- Windows ---
       - name: Run CI script on Windows
         if: runner.os == 'Windows'
-        run: ci.bat
-
+        run: .\ci.bat
       # --- Run tests (works for all) ---
       - name: Run tests
         run: ctest --output-on-failure
